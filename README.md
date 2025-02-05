@@ -13,7 +13,7 @@ To run EssenceExtractor locally, follow these steps:
 1. **Clone the Repository**:
 
    ``bash
-   git clone https://github.com/YourUsername/EssenceExtractor.git
+   git clone [ https://github.com/YourUsername/EssenceExtractor.git](https://github.com/Sheesikram/EssenceExtractor)
    ```
 2. **Navigate to the Project Directory**:
 
