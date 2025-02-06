@@ -10,28 +10,22 @@ import os
 
 ##pip install diffusers transformers accelerate --upgrade
 
-
 st.set_page_config(
     page_title="Shees Pod",
-   
 )
-
-
-
-
-
-
 
 # Set up Whisper model
 @st.cache_resource
 def load_whisper_model():
     return whisper.load_model("base")
 
-groq_api_key=os.environ['GROQ_API_KEY']
-llm=ChatGroq(groq_api_key=groq_api_key,
-             model_name="deepseek-r1-distill-llama-70b")
+# Ask user for API key
+groq_api_key = st.text_input("Enter your GROQ API Key:", type="password")
 
-# Summarize text using Gemini
+if groq_api_key:
+    llm = ChatGroq(groq_api_key=groq_api_key, model_name="deepseek-r1-distill-llama-70b")
+
+    # Summarize text function
 def summarize_text(text, llm):
     prompt = PromptTemplate(
         input_variables=["text"],
@@ -46,6 +40,10 @@ def main():
     load_dotenv()
     st.title("EssenceExtractor 🎙")
     st.write("Upload a podcast audio or video file to get a summary.")
+
+    if not groq_api_key:
+        st.warning("Please enter your GROQ API key to continue.")
+        return
 
     # File uploader
     uploaded_file = st.file_uploader("Choose a file")
@@ -64,15 +62,9 @@ def main():
                 transcription = result["text"]
                 
                 st.success("Transcription complete!")
-                ##pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
-                ##pipe.to("cuda")
 
-                ##prompt = "A cinematic shot of a baby racoon wearing an intricate italian priest robe."
-
-                ##image = pipe(prompt=transcription, num_inference_steps=1, guidance_scale=0.0).images[0] 
             with st.spinner("Generating summary..."):
                 # Summarize using Groq
-               
                 summary = summarize_text(transcription, llm)
                 st.success("Summary generated!")
 
