@@ -7,8 +7,13 @@ from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
-
+import shutil
+import subprocess
 ##pip install diffusers transformers accelerate --upgrade
+if not shutil.which("ffmpeg"):
+    st.error("FFmpeg is missing! Install it using 'packages.txt' in Streamlit Cloud.")
+else:
+    st.success("FFmpeg is installed.")
 
 st.set_page_config(
     page_title="Shees Pod",
